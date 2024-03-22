@@ -11,7 +11,7 @@ type RegisterRequest struct {
 	UserName     string `json:"username" bson:"username"`
 	Password     string `json:"password" binding:"required,min=8"`
 	Role         string `json:"role" binding:"required,oneof=admin exhibitor"`
-	ProfileImage string `json:"profile" bson:"profile"`
+	ProfileImage string `json:"profile,omitempty" bson:"profile,omitempty"`
 }
 
 type User struct {
@@ -20,5 +20,5 @@ type User struct {
 	Email        string `json:"email" bson:"email"`
 	Password     string `json:"password" bson:"password"`
 	Role         string `json:"role" bson:"role"`
-	ProfileImage string `json:"profile" bson:"profile"`
+	ProfileImage string `json:"profile,omitempty" bson:"profile,omitempty"`
 }

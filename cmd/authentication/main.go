@@ -1,6 +1,7 @@
 package main
 
 import (
+	_ "atommuse/backend/authentication-service/cmd/authentication/doc"
 	handlers "atommuse/backend/authentication-service/handler"
 	"atommuse/backend/authentication-service/pkg/repository"
 	services "atommuse/backend/authentication-service/pkg/service"
@@ -8,12 +9,19 @@ import (
 	"log"
 	"os"
 
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
+
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
+// @title			Authentication Service API
+// @version		v0
+// @description	Authentication Service สำหรับขอจัดการเกี่ยวกับ Authentication
+// @schemes		http
 func main() {
-	router := gin.Default()
 
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Error loading .env file:", err)
@@ -43,6 +51,17 @@ func main() {
 
 	// Handlers
 	authHandler := handlers.NewAuthHandler(authService)
+
+	// Add CORS middleware
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true
+
+	// Swagger documentation route
+	router := gin.Default()
+	router.Use(cors.New(config))
+
+	url := ginSwagger.URL("/swagger/doc.json")
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	// Routes
 	authRoutes := router.Group("/auth")

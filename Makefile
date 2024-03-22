@@ -7,4 +7,4 @@ test-coverage:
 	go tool cover -html=coverage/cover.out
 
 gen-swag:
-	swag init -d ./cmd/authentication,./handler/authentication -o ./cmd/authentication/doc --pd
+	swag init -d ./cmd/authentication,./handler -o ./cmd/authentication/doc --pd
