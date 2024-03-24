@@ -1,15 +1,14 @@
 package utils
 
 import (
+	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
 
-const (
-	tokenSecret = "your_secret_key"
-)
+var tokenSecret = os.Getenv("secret_key")
 
 func HashPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
