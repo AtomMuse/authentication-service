@@ -24,13 +24,15 @@ func ComparePassword(hashedPassword, password string) bool {
 	return err == nil
 }
 
-func GenerateToken(userID, userName, role string, profile string) (string, error) {
+func GenerateToken(userID, userName, role string, profile string, firstname string, lastname string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"userID":   userID,
-		"userName": userName,
-		"role":     role,
-		"profile":  profile,
-		"exp":      time.Now().Add(time.Hour * 24).Unix(),
+		"userID":    userID,
+		"userName":  userName,
+		"role":      role,
+		"profile":   profile,
+		"firstname": firstname,
+		"lastname":  lastname,
+		"exp":       time.Now().Add(time.Hour * 24).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte(tokenSecret))

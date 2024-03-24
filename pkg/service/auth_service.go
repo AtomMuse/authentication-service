@@ -33,7 +33,7 @@ func (s *authService) Login(request model.LoginRequest) (string, error) {
 		return "", errors.New("invalid email or password")
 	}
 
-	token, err := utils.GenerateToken(user.ID, user.UserName, user.Role, user.ProfileImage)
+	token, err := utils.GenerateToken(user.ID, user.UserName, user.Role, user.ProfileImage, user.FirstName, user.LastName)
 	if err != nil {
 		return "", err
 	}
@@ -48,10 +48,12 @@ func (s *authService) Register(request model.RegisterRequest) error {
 	}
 
 	user := model.User{
-		Email:    request.Email,
-		UserName: request.UserName,
-		Password: hashedPassword,
-		Role:     request.Role,
+		Email:        request.Email,
+		UserName:     request.UserName,
+		FirstName:    request.FirstName,
+		LastName:     request.LastName,
+		Password:     hashedPassword,
+		ProfileImage: request.ProfileImage,
 	}
 
 	err = s.userRepo.CreateUser(&user)

@@ -25,6 +25,7 @@ func NewUserRepository(db *mongo.Database) UserRepository {
 }
 
 func (r *userRepository) CreateUser(user *model.User) error {
+	user.Role = "exhibitor"
 	_, err := r.collection.InsertOne(context.Background(), user)
 	if err != nil {
 		return err
