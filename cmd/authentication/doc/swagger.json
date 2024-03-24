@@ -98,11 +98,19 @@
             "type": "object",
             "required": [
                 "email",
+                "firstname",
+                "lastname",
                 "password",
-                "role"
+                "username"
             ],
             "properties": {
                 "email": {
+                    "type": "string"
+                },
+                "firstname": {
+                    "type": "string"
+                },
+                "lastname": {
                     "type": "string"
                 },
                 "password": {
@@ -111,13 +119,6 @@
                 },
                 "profile": {
                     "type": "string"
-                },
-                "role": {
-                    "type": "string",
-                    "enum": [
-                        "admin",
-                        "exhibitor"
-                    ]
                 },
                 "username": {
                     "type": "string"

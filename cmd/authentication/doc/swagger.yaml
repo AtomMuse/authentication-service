@@ -15,22 +15,23 @@ definitions:
     properties:
       email:
         type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
       password:
         minLength: 8
         type: string
       profile:
         type: string
-      role:
-        enum:
-        - admin
-        - exhibitor
-        type: string
       username:
         type: string
     required:
     - email
+    - firstname
+    - lastname
     - password
-    - role
+    - username
     type: object
 info:
   contact: {}
