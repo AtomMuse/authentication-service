@@ -33,7 +33,8 @@ func (s *authService) Login(request model.LoginRequest) (string, error) {
 		return "", errors.New("invalid email or password")
 	}
 
-	token, err := utils.GenerateToken(user.ID, user.UserName, user.Role, user.ProfileImage, user.FirstName, user.LastName)
+	userIDString := user.ID.Hex() // Convert ObjectID to string
+	token, err := utils.GenerateToken(userIDString, user.UserName, user.Role, user.ProfileImage, user.FirstName, user.LastName)
 	if err != nil {
 		return "", err
 	}

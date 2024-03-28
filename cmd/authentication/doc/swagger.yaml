@@ -33,12 +33,53 @@ definitions:
     - password
     - username
     type: object
+  model.RequestUpdateUser:
+    properties:
+      email:
+        type: string
+      firstname:
+        type: string
+      lastname:
+        type: string
+      profile:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact: {}
   description: Authentication Service สำหรับขอจัดการเกี่ยวกับ Authentication
   title: Authentication Service API
   version: v0
 paths:
+  /api/user/{id}:
+    put:
+      description: Edit User
+      operationId: UpdateUserByID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User data to edit
+        in: body
+        name: RequestUpdateUser
+        required: true
+        schema:
+          $ref: '#/definitions/model.RequestUpdateUser'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Edit User
+      tags:
+      - User
   /auth/login:
     post:
       description: Login user
@@ -83,4 +124,9 @@ paths:
       - Authentications
 schemes:
 - http
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"
