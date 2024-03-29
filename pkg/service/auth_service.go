@@ -6,6 +6,8 @@ import (
 	"atommuse/backend/authentication-service/pkg/repository"
 	"atommuse/backend/authentication-service/pkg/utils"
 	"errors"
+
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type AuthService interface {
@@ -43,6 +45,15 @@ func (s *authService) Login(request model.LoginRequest) (string, error) {
 }
 
 func (s *authService) Register(request model.RegisterRequest) error {
+	// Check if the email already exists in the database
+	existingUser, err := s.userRepo.GetUserByEmail(request.Email)
+	if err != nil && err != mongo.ErrNoDocuments {
+		return err // Return error if something goes wrong other than not finding the document
+	}
+	if existingUser != nil {
+		return errors.New("email already exists")
+	}
+
 	hashedPassword, err := utils.HashPassword(request.Password)
 	if err != nil {
 		return err
