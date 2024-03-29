@@ -81,7 +81,8 @@ func main() {
 	}
 	apiRoutes := router.Group("/api")
 	{
-		apiRoutes.PUT("/user/:id", userHandler.UpdateUserByID)
+		apiRoutes.PUT("/user/:id", authMiddleware("exhibitor"), userHandler.UpdateUserByID)
+		apiRoutes.POST("/user/change-password", authMiddleware("exhibitor"), userHandler.ChangePassword)
 	}
 
 	// Run the server
@@ -99,7 +100,7 @@ func main() {
 func authMiddleware(role string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
-		secretKey := os.Getenv("secret_key")
+		secretKey := os.Getenv("SECRET_KEY") // Corrected env variable name
 		if token == "" {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization token is required"})
 			c.Abort()
@@ -122,12 +123,9 @@ func authMiddleware(role string) gin.HandlerFunc {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 			}
 			// Return the secret key for validation
-
-			fmt.Println(secretKey)
-			fmt.Println(claims)
-
 			return []byte(secretKey), nil
 		})
+
 		// Handle token parsing errors
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token: " + err.Error()})
@@ -144,8 +142,11 @@ func authMiddleware(role string) gin.HandlerFunc {
 			return
 		}
 
+		// Set user ID in context
+		c.Set("user_id", claims.UserID)
+
 		// Check if the role matches
-		if claims.Role != role {
+		if claims.Role != "admin" && claims.Role != "exhibitor" && claims.Role != role {
 			c.JSON(http.StatusForbidden, gin.H{"error": "Insufficient permissions"})
 			c.Abort()
 			fmt.Println("Insufficient permissions")

@@ -40,3 +40,7 @@ func GenerateToken(userID, userName, role string, profile string, firstname stri
 	}
 	return tokenString, nil
 }
+
+func VerifyPassword(hashedPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+}

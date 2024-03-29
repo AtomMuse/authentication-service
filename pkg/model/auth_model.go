@@ -39,10 +39,16 @@ type RequestUpdateUser struct {
 	ProfileImage string `json:"profile,omitempty" bson:"profile,omitempty"`
 }
 
+type RequestUpdateUserPassword struct {
+	OldPassword string `json:"old_password" binding:"required"`
+	NewPassword string `json:"new_password" binding:"required,min=8"`
+}
+
 // jwtCustomClaims represents the custom claims of a JWT token
 type JwtCustomClaims struct {
 	Role         string `json:"role"`
 	UserName     string `json:"username" bson:"username"`
+	UserID       string `json:"userID" bson:"userID"`
 	FirstName    string `json:"firstname" bson:"firstname"`
 	LastName     string `json:"lastname" bson:"lastname"`
 	ProfileImage string `json:"profile,omitempty" bson:"profile,omitempty"`
