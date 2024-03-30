@@ -7,7 +7,6 @@ import (
 
 type LoginRequest struct {
 	Email    string `json:"email" binding:"required,email"`
-	UserName string `json:"username" bson:"username"`
 	Password string `json:"password" binding:"required"`
 }
 

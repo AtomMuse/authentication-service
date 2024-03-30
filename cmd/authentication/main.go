@@ -82,7 +82,7 @@ func main() {
 	apiRoutes := router.Group("/api")
 	{
 		apiRoutes.PUT("/user/:id", authMiddleware("exhibitor"), userHandler.UpdateUserByID)
-		apiRoutes.POST("/user/change-password", authMiddleware("exhibitor"), userHandler.ChangePassword)
+		apiRoutes.PUT("/user/change-password", authMiddleware("exhibitor"), userHandler.ChangePassword)
 	}
 
 	// Run the server

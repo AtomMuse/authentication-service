@@ -53,6 +53,16 @@ func (h *UserHandler) UpdateUserByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "User updated successfully"})
 }
 
+// @Summary		Change Password
+// @Description	Change Password
+// @Tags			User
+// @Security		BearerAuth
+// @ID				ChangePassword
+// @Produce		json
+// @Param			RequestUpdateUserPassword	body	model.RequestUpdateUserPassword	true	"User password to change password"
+// @Success		200
+// @Failure		500
+// @Router			/api/user/change-password [put]
 func (h *UserHandler) ChangePassword(c *gin.Context) {
 	var changePasswordRequest model.RequestUpdateUserPassword
 	if err := c.ShouldBindJSON(&changePasswordRequest); err != nil {

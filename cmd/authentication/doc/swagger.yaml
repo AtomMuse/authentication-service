@@ -5,8 +5,6 @@ definitions:
         type: string
       password:
         type: string
-      username:
-        type: string
     required:
     - email
     - password
@@ -46,6 +44,17 @@ definitions:
       username:
         type: string
     type: object
+  model.RequestUpdateUserPassword:
+    properties:
+      new_password:
+        minLength: 8
+        type: string
+      old_password:
+        type: string
+    required:
+    - new_password
+    - old_password
+    type: object
 info:
   contact: {}
   description: Authentication Service สำหรับขอจัดการเกี่ยวกับ Authentication
@@ -78,6 +87,29 @@ paths:
       security:
       - BearerAuth: []
       summary: Edit User
+      tags:
+      - User
+  /api/user/change-password:
+    put:
+      description: Change Password
+      operationId: ChangePassword
+      parameters:
+      - description: User password to change password
+        in: body
+        name: RequestUpdateUserPassword
+        required: true
+        schema:
+          $ref: '#/definitions/model.RequestUpdateUserPassword'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: Change Password
       tags:
       - User
   /auth/login:
