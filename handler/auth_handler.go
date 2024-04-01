@@ -25,6 +25,10 @@ func NewAuthHandler(authService services.AuthService) *AuthHandler {
 //	@Produce		json
 //	@Param			loginRequest	body	model.LoginRequest	true	"User data to login"
 //	@Success		200
+//
+//	@Failure		400
+//	@Failure		401
+//
 //	@Failure		500
 //	@Router			/auth/login [post]
 func (h *AuthHandler) Login(c *gin.Context) {
@@ -49,7 +53,9 @@ func (h *AuthHandler) Login(c *gin.Context) {
 //	@ID				Register
 //	@Produce		json
 //	@Param			registerRequest	body	model.RegisterRequest	true	"User data to create"
-//	@Success		200
+//	@Success		201
+//	@Failure		400
+//	@Failure		401
 //	@Failure		500
 //	@Router			/auth/register [post]
 func (h *AuthHandler) Register(c *gin.Context) {

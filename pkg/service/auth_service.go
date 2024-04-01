@@ -28,11 +28,11 @@ func NewAuthService(userRepo repository.UserRepository) AuthService {
 func (s *authService) Login(request model.LoginRequest) (string, error) {
 	user, err := s.userRepo.GetUserByEmail(request.Email)
 	if err != nil {
-		return "", err
+		return "", errors.New("Email or Password Mismatch")
 	}
 
 	if user == nil || !utils.ComparePassword(user.Password, request.Password) {
-		return "", errors.New("invalid email or password")
+		return "", errors.New("Email or Password Mismatch")
 	}
 
 	userIDString := user.ID.Hex() // Convert ObjectID to string

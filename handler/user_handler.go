@@ -21,17 +21,20 @@ func NewUserHandler(userService services.UserService) *UserHandler {
 
 // UpdateUserByIDHandler handles HTTP requests to update a user by their ID.
 
-// @Summary		Edit User
-// @Description	Edit User
-// @Tags			User
-// @Security		BearerAuth
-// @ID				UpdateUserByID
-// @Produce		json
-// @Param			id					path	string					true	"User ID"
-// @Param			RequestUpdateUser	body	model.RequestUpdateUser	true	"User data to edit"
-// @Success		200
-// @Failure		500
-// @Router			/api/user/{id} [put]
+//	@Summary		Edit User
+//	@Description	Edit User
+//	@Tags			User
+//	@Security		BearerAuth
+//	@ID				UpdateUserByID
+//	@Produce		json
+//	@Param			id					path	string					true	"User ID"
+//	@Param			RequestUpdateUser	body	model.RequestUpdateUser	true	"User data to edit"
+//	@Success		200
+//
+//	@Failure		400
+//
+//	@Failure		500
+//	@Router			/api/user/{id} [put]
 func (h *UserHandler) UpdateUserByID(c *gin.Context) {
 	// Get user ID from URL path
 	userID := c.Param("id")
@@ -53,16 +56,17 @@ func (h *UserHandler) UpdateUserByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "User updated successfully"})
 }
 
-// @Summary		Change Password
-// @Description	Change Password
-// @Tags			User
-// @Security		BearerAuth
-// @ID				ChangePassword
-// @Produce		json
-// @Param			RequestUpdateUserPassword	body	model.RequestUpdateUserPassword	true	"User password to change password"
-// @Success		200
-// @Failure		500
-// @Router			/api/user/change-password [put]
+//	@Summary		Change Password
+//	@Description	Change Password
+//	@Tags			User
+//	@Security		BearerAuth
+//	@ID				ChangePassword
+//	@Produce		json
+//	@Param			RequestUpdateUserPassword	body	model.RequestUpdateUserPassword	true	"User password to change password"
+//	@Success		200
+//	@Failure		401
+//	@Failure		500
+//	@Router			/api/user/change-password [put]
 func (h *UserHandler) ChangePassword(c *gin.Context) {
 	var changePasswordRequest model.RequestUpdateUserPassword
 	if err := c.ShouldBindJSON(&changePasswordRequest); err != nil {

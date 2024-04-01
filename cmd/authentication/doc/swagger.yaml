@@ -82,6 +82,8 @@ paths:
       responses:
         "200":
           description: OK
+        "400":
+          description: Bad Request
         "500":
           description: Internal Server Error
       security:
@@ -105,6 +107,8 @@ paths:
       responses:
         "200":
           description: OK
+        "401":
+          description: Unauthorized
         "500":
           description: Internal Server Error
       security:
@@ -128,6 +132,10 @@ paths:
       responses:
         "200":
           description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
         "500":
           description: Internal Server Error
       summary: Login
@@ -147,8 +155,12 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
         "500":
           description: Internal Server Error
       summary: Register

@@ -21,14 +21,14 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// @title						Authentication Service API
-// @version					v0
-// @description				Authentication Service สำหรับขอจัดการเกี่ยวกับ Authentication
-// @schemes					http
+//	@title						Authentication Service API
+//	@version					v0
+//	@description				Authentication Service สำหรับขอจัดการเกี่ยวกับ Authentication
+//	@schemes					http
 //
-// @SecurityDefinitions.apikey	BearerAuth
-// @In							header
-// @Name						Authorization
+//	@SecurityDefinitions.apikey	BearerAuth
+//	@In							header
+//	@Name						Authorization
 func main() {
 
 	if err := godotenv.Load(); err != nil {
@@ -122,9 +122,12 @@ func authMiddleware(role string) gin.HandlerFunc {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 			}
+
 			// Return the secret key for validation
 			return []byte(secretKey), nil
 		})
+
+		fmt.Println(parsedToken.Valid)
 
 		// Handle token parsing errors
 		if err != nil {
