@@ -36,7 +36,7 @@ func (s *authService) Login(request model.LoginRequest) (string, error) {
 	}
 
 	userIDString := user.ID.Hex() // Convert ObjectID to string
-	token, err := utils.GenerateToken(userIDString, user.UserName, user.Role, user.ProfileImage, user.FirstName, user.LastName)
+	token, err := utils.GenerateToken(userIDString, user.UserName, user.Role, user.ProfileImage, user.FirstName, user.LastName, user.Email)
 	if err != nil {
 		return "", err
 	}
