@@ -80,7 +80,6 @@ func main() {
 
 		c.Next()
 	})
-	router.Use(cors.New(config))
 
 	url := ginSwagger.URL("/swagger/doc.json")
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
