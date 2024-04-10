@@ -21,14 +21,14 @@ import (
 	"github.com/joho/godotenv"
 )
 
-//	@title						Authentication Service API
-//	@version					v0
-//	@description				Authentication Service สำหรับขอจัดการเกี่ยวกับ Authentication
-//	@schemes					http
+// @title						Authentication Service API
+// @version					v0
+// @description				Authentication Service สำหรับขอจัดการเกี่ยวกับ Authentication
+// @schemes					http
 //
-//	@SecurityDefinitions.apikey	BearerAuth
-//	@In							header
-//	@Name						Authorization
+// @SecurityDefinitions.apikey	BearerAuth
+// @In							header
+// @Name						Authorization
 func main() {
 
 	if err := godotenv.Load(); err != nil {
@@ -68,6 +68,18 @@ func main() {
 
 	// Swagger documentation route
 	router := gin.Default()
+	router.Use(func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*") // Replace "*" with allowed origins
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(200)
+			return
+		}
+
+		c.Next()
+	})
 	router.Use(cors.New(config))
 
 	url := ginSwagger.URL("/swagger/doc.json")
