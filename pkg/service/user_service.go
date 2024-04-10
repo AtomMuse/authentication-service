@@ -10,7 +10,7 @@ import (
 )
 
 type UserService interface {
-	UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) error
+	UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) (string, error)
 	ChangePassword(userID, oldPassword, newPassword string) error
 }
 
@@ -24,7 +24,7 @@ func NewUserService(userRepo repository.UserRepository) UserService {
 	}
 }
 
-func (s *userService) UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) error {
+func (s *userService) UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) (string, error) {
 	return s.userRepo.UpdateUserByID(userID, updateUser)
 }
 

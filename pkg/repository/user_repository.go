@@ -2,6 +2,7 @@ package repository
 
 import (
 	"atommuse/backend/authentication-service/pkg/model"
+	"atommuse/backend/authentication-service/pkg/utils"
 	"context"
 	"errors"
 	"fmt"
@@ -15,7 +16,7 @@ type UserRepository interface {
 	CreateUser(user *model.User) error
 	GetUserByEmail(email string) (*model.User, error)
 	GetUserByID(userID string) (*model.User, error)
-	UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) error
+	UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) (string, error)
 	UpdateUserPasswordByID(userID string, newPassword string) error
 }
 
@@ -73,11 +74,11 @@ func (r *userRepository) GetUserByID(userID string) (*model.User, error) {
 }
 
 // updateUserByID updates a user by their ID.
-func (r *userRepository) UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) error {
+func (r *userRepository) UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) (string, error) {
 	// Convert the string ID to ObjectId
 	objectID, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
-		return fmt.Errorf("invalid user ID format: %v", err)
+		return "", fmt.Errorf("invalid user ID format: %v", err)
 	}
 
 	// Define the update fields
@@ -96,7 +97,23 @@ func (r *userRepository) UpdateUserByID(userID string, updateUser *model.Request
 
 	// Perform the update operation
 	_, err = r.collection.UpdateOne(context.Background(), filter, update)
-	return err
+	if err != nil {
+		return "", err
+	}
+
+	// Retrieve updated user
+	user, err := r.GetUserByEmail(updateUser.Email)
+	if err != nil {
+		return "", err
+	}
+
+	// Generate token
+	tokenString, err := utils.GenerateToken(userID, user.UserName, user.Role, user.ProfileImage, user.FirstName, user.LastName, user.Email)
+	if err != nil {
+		return "", err
+	}
+
+	return tokenString, nil
 }
 
 func (r *userRepository) UpdateUserPasswordByID(userID string, newPassword string) error {
