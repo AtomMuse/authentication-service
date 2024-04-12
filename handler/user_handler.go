@@ -32,7 +32,7 @@ func NewUserHandler(userService services.UserService) *UserHandler {
 // @Success		200
 //
 // @Failure		400
-//
+// @Failure		401
 // @Failure		500
 // @Router			/api/user/{id} [put]
 func (h *UserHandler) UpdateUserByID(c *gin.Context) {
@@ -92,4 +92,30 @@ func (h *UserHandler) ChangePassword(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Password changed successfully"})
+}
+
+// @Summary		GetUserByID
+// @Description	GetUserByID
+// @Tags			User
+// @ID				GetUserByID
+// @Produce		json
+// @Param			id					path	string					true	"User ID"
+// @Success		200
+//
+// @Failure		400
+// @Failure		401
+// @Failure		500
+// @Router			/api/user/{id} [get]
+func (h *UserHandler) GetUserByID(c *gin.Context) {
+	userID := c.Param("id")
+	user, err := h.userService.GetUserByID(userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if user == nil {
+		c.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
+		return
+	}
+	c.JSON(http.StatusOK, user)
 }

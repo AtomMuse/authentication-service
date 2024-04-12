@@ -12,6 +12,7 @@ import (
 type UserService interface {
 	UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) (string, error)
 	ChangePassword(userID, oldPassword, newPassword string) error
+	GetUserByID(userID string) (*model.User, error)
 }
 
 type userService struct {
@@ -55,4 +56,8 @@ func (s *userService) ChangePassword(userID, oldPassword, newPassword string) er
 	}
 
 	return nil
+}
+
+func (s *userService) GetUserByID(userID string) (*model.User, error) {
+	return s.userRepo.GetUserByID(userID)
 }
