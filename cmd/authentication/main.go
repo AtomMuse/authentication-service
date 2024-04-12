@@ -48,7 +48,7 @@ func main() {
 	}()
 
 	// Get a database instance
-	dbName := "atommuse"
+	dbName := "atommuse-user"
 	db := mongoDBConn.GetDatabase(dbName)
 
 	// Repositories
