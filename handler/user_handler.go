@@ -21,20 +21,20 @@ func NewUserHandler(userService services.UserService) *UserHandler {
 
 // UpdateUserByIDHandler handles HTTP requests to update a user by their ID.
 
-// @Summary		Edit User
-// @Description	Edit User
-// @Tags			User
-// @Security		BearerAuth
-// @ID				UpdateUserByID
-// @Produce		json
-// @Param			id					path	string					true	"User ID"
-// @Param			RequestUpdateUser	body	model.RequestUpdateUser	true	"User data to edit"
-// @Success		200
+//	@Summary		Edit User
+//	@Description	Edit User
+//	@Tags			User
+//	@Security		BearerAuth
+//	@ID				UpdateUserByID
+//	@Produce		json
+//	@Param			id					path	string					true	"User ID"
+//	@Param			RequestUpdateUser	body	model.RequestUpdateUser	true	"User data to edit"
+//	@Success		200
 //
-// @Failure		400
-// @Failure		401
-// @Failure		500
-// @Router			/api/user/{id} [put]
+//	@Failure		400
+//	@Failure		401
+//	@Failure		500
+//	@Router			/api/user/{id} [put]
 func (h *UserHandler) UpdateUserByID(c *gin.Context) {
 	// Get user ID from URL path
 	userID := c.Param("id")
@@ -56,17 +56,17 @@ func (h *UserHandler) UpdateUserByID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"token": token, "message": "User updated successfully"})
 }
 
-// @Summary		Change Password
-// @Description	Change Password
-// @Tags			User
-// @Security		BearerAuth
-// @ID				ChangePassword
-// @Produce		json
-// @Param			RequestUpdateUserPassword	body	model.RequestUpdateUserPassword	true	"User password to change password"
-// @Success		200
-// @Failure		401
-// @Failure		500
-// @Router			/api/user/change-password [put]
+//	@Summary		Change Password
+//	@Description	Change Password
+//	@Tags			User
+//	@Security		BearerAuth
+//	@ID				ChangePassword
+//	@Produce		json
+//	@Param			RequestUpdateUserPassword	body	model.RequestUpdateUserPassword	true	"User password to change password"
+//	@Success		200
+//	@Failure		401
+//	@Failure		500
+//	@Router			/api/user/change-password [put]
 func (h *UserHandler) ChangePassword(c *gin.Context) {
 	var changePasswordRequest model.RequestUpdateUserPassword
 	if err := c.ShouldBindJSON(&changePasswordRequest); err != nil {
@@ -94,18 +94,18 @@ func (h *UserHandler) ChangePassword(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Password changed successfully"})
 }
 
-// @Summary		GetUserByID
-// @Description	GetUserByID
-// @Tags			User
-// @ID				GetUserByID
-// @Produce		json
-// @Param			id					path	string					true	"User ID"
-// @Success		200
+//	@Summary		GetUserByID
+//	@Description	GetUserByID
+//	@Tags			User
+//	@ID				GetUserByID
+//	@Produce		json
+//	@Param			id	path	string	true	"User ID"
+//	@Success		200
 //
-// @Failure		400
-// @Failure		401
-// @Failure		500
-// @Router			/api/user/{id} [get]
+//	@Failure		400
+//	@Failure		401
+//	@Failure		500
+//	@Router			/api/user/{id} [get]
 func (h *UserHandler) GetUserByID(c *gin.Context) {
 	userID := c.Param("id")
 	user, err := h.userService.GetUserByID(userID)
@@ -118,4 +118,26 @@ func (h *UserHandler) GetUserByID(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, user)
+}
+
+//	@Summary		BanUser
+//	@Description	BanUser
+//	@Tags			Admin
+//	@ID				BanUser
+//	@Security		BearerAuth
+//	@Produce		json
+//	@Param			id	path	string	true	"User ID"
+//	@Success		200
+//
+//	@Failure		400
+//	@Failure		401
+//	@Failure		500
+//	@Router			/api/user/{id}/ban [post]
+func (h *UserHandler) BanUser(c *gin.Context) {
+	userID := c.Param("id")
+	if err := h.userService.BanUser(c.Request.Context(), userID); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to ban user"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "User banned successfully"})
 }

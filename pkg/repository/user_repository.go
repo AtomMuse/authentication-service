@@ -18,6 +18,7 @@ type UserRepository interface {
 	GetUserByID(userID string) (*model.User, error)
 	UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) (string, error)
 	UpdateUserPasswordByID(userID string, newPassword string) error
+	BanUser(ctx context.Context, userID string) error
 }
 
 type userRepository struct {
@@ -131,5 +132,17 @@ func (r *userRepository) UpdateUserPasswordByID(userID string, newPassword strin
 
 	// Perform the update operation
 	_, err = r.collection.UpdateOne(context.Background(), filter, update)
+	return err
+}
+
+// BanUser bans a user by ID
+func (r *userRepository) BanUser(ctx context.Context, userID string) error {
+	// Convert the string ID to ObjectId
+	objectID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return fmt.Errorf("invalid user ID format: %v", err)
+	}
+
+	_, err = r.collection.UpdateOne(ctx, bson.M{"_id": objectID}, bson.M{"$set": bson.M{"role": "banned"}})
 	return err
 }

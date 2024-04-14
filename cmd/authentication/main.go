@@ -21,14 +21,14 @@ import (
 	"github.com/joho/godotenv"
 )
 
-// @title						Authentication Service API
-// @version					v0
-// @description				Authentication Service สำหรับขอจัดการเกี่ยวกับ Authentication
-// @schemes					http
+//	@title						Authentication Service API
+//	@version					v0
+//	@description				Authentication Service สำหรับขอจัดการเกี่ยวกับ Authentication
+//	@schemes					http
 //
-// @SecurityDefinitions.apikey	BearerAuth
-// @In							header
-// @Name						Authorization
+//	@SecurityDefinitions.apikey	BearerAuth
+//	@In							header
+//	@Name						Authorization
 func main() {
 
 	if err := godotenv.Load(); err != nil {
@@ -95,6 +95,7 @@ func main() {
 		apiRoutes.PUT("/user/:id", authMiddleware("exhibitor"), userHandler.UpdateUserByID)
 		apiRoutes.PUT("/user/change-password", authMiddleware("exhibitor"), userHandler.ChangePassword)
 		apiRoutes.GET("/user/:id", userHandler.GetUserByID)
+		apiRoutes.POST("/user/:id/ban", authMiddleware("admin"), userHandler.BanUser)
 	}
 
 	// Run the server

@@ -4,6 +4,7 @@ import (
 	"atommuse/backend/authentication-service/pkg/model"
 	"atommuse/backend/authentication-service/pkg/repository"
 	"atommuse/backend/authentication-service/pkg/utils"
+	"context"
 	"errors"
 
 	"golang.org/x/crypto/bcrypt"
@@ -13,6 +14,7 @@ type UserService interface {
 	UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) (string, error)
 	ChangePassword(userID, oldPassword, newPassword string) error
 	GetUserByID(userID string) (*model.User, error)
+	BanUser(ctx context.Context, userID string) error
 }
 
 type userService struct {
@@ -60,4 +62,8 @@ func (s *userService) ChangePassword(userID, oldPassword, newPassword string) er
 
 func (s *userService) GetUserByID(userID string) (*model.User, error) {
 	return s.userRepo.GetUserByID(userID)
+}
+
+func (s *userService) BanUser(ctx context.Context, userID string) error {
+	return s.userRepo.BanUser(ctx, userID)
 }
