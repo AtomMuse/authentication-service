@@ -15,6 +15,7 @@ type UserService interface {
 	ChangePassword(userID, oldPassword, newPassword string) error
 	GetUserByID(userID string) (*model.User, error)
 	BanUser(ctx context.Context, userID string) error
+	GetAllUsers(ctx context.Context) ([]model.ReponseUser, error)
 }
 
 type userService struct {
@@ -66,4 +67,8 @@ func (s *userService) GetUserByID(userID string) (*model.User, error) {
 
 func (s *userService) BanUser(ctx context.Context, userID string) error {
 	return s.userRepo.BanUser(ctx, userID)
+}
+
+func (s *userService) GetAllUsers(ctx context.Context) ([]model.ReponseUser, error) {
+	return s.userRepo.GetAllUsers(ctx)
 }

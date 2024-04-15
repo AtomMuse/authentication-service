@@ -94,32 +94,6 @@ func (h *UserHandler) ChangePassword(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Password changed successfully"})
 }
 
-//	@Summary		GetUserByID
-//	@Description	GetUserByID
-//	@Tags			User
-//	@ID				GetUserByID
-//	@Produce		json
-//	@Param			id	path	string	true	"User ID"
-//	@Success		200
-//
-//	@Failure		400
-//	@Failure		401
-//	@Failure		500
-//	@Router			/api/user/{id} [get]
-func (h *UserHandler) GetUserByID(c *gin.Context) {
-	userID := c.Param("id")
-	user, err := h.userService.GetUserByID(userID)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	if user == nil {
-		c.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
-		return
-	}
-	c.JSON(http.StatusOK, user)
-}
-
 //	@Summary		BanUser
 //	@Description	BanUser
 //	@Tags			Admin
@@ -140,4 +114,25 @@ func (h *UserHandler) BanUser(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"message": "User banned successfully"})
+}
+
+//	@Summary		GetAllUsers
+//	@Description	GetAllUsers
+//	@Tags			User
+//	@Security		BearerAuth
+//	@ID				GetAllUsers
+//	@Produce		json
+//	@Success		200
+//
+//	@Failure		400
+//	@Failure		401
+//	@Failure		500
+//	@Router			/api/users [get]
+func (h *UserHandler) GetAllUsers(c *gin.Context) {
+	users, err := h.userService.GetAllUsers(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch users"})
+		return
+	}
+	c.JSON(http.StatusOK, users)
 }

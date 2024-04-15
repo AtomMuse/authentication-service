@@ -94,7 +94,7 @@ func main() {
 	{
 		apiRoutes.PUT("/user/:id", authMiddleware("exhibitor"), userHandler.UpdateUserByID)
 		apiRoutes.PUT("/user/change-password", authMiddleware("exhibitor"), userHandler.ChangePassword)
-		apiRoutes.GET("/user/:id", userHandler.GetUserByID)
+		apiRoutes.GET("/users", authMiddleware("admin"), userHandler.GetAllUsers)
 		apiRoutes.POST("/user/:id/ban", authMiddleware("admin"), userHandler.BanUser)
 	}
 

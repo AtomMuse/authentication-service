@@ -19,6 +19,7 @@ type UserRepository interface {
 	UpdateUserByID(userID string, updateUser *model.RequestUpdateUser) (string, error)
 	UpdateUserPasswordByID(userID string, newPassword string) error
 	BanUser(ctx context.Context, userID string) error
+	GetAllUsers(ctx context.Context) ([]model.ReponseUser, error)
 }
 
 type userRepository struct {
@@ -145,4 +146,19 @@ func (r *userRepository) BanUser(ctx context.Context, userID string) error {
 
 	_, err = r.collection.UpdateOne(ctx, bson.M{"_id": objectID}, bson.M{"$set": bson.M{"role": "banned"}})
 	return err
+}
+
+// GetAllUsers retrieves all users from the database
+func (r *userRepository) GetAllUsers(ctx context.Context) ([]model.ReponseUser, error) {
+	cursor, err := r.collection.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var users []model.ReponseUser
+	if err := cursor.All(ctx, &users); err != nil {
+		return nil, err
+	}
+	return users, nil
 }

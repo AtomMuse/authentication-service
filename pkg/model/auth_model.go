@@ -29,6 +29,15 @@ type User struct {
 	Role         string             `json:"role" bson:"role"`
 	ProfileImage string             `json:"profile,omitempty" bson:"profile,omitempty"`
 }
+type ReponseUser struct {
+	ID           primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	UserName     string             `json:"username" bson:"username"`
+	FirstName    string             `json:"firstname" bson:"firstname"`
+	LastName     string             `json:"lastname" bson:"lastname"`
+	Email        string             `json:"email" bson:"email"`
+	Role         string             `json:"role" bson:"role"`
+	ProfileImage string             `json:"profile,omitempty" bson:"profile,omitempty"`
+}
 
 type RequestUpdateUser struct {
 	UserName     string `json:"username" bson:"username"`
