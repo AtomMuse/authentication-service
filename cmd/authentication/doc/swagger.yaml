@@ -61,7 +61,27 @@ info:
   title: Authentication Service API
   version: v0
 paths:
-  /api/user/{id}:
+  /api-users/users:
+    get:
+      description: GetAllUsers
+      operationId: GetAllUsers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      security:
+      - BearerAuth: []
+      summary: GetAllUsers
+      tags:
+      - User
+  /api-users/users/{id}:
     put:
       description: Edit User
       operationId: UpdateUserByID
@@ -93,7 +113,7 @@ paths:
       summary: Edit User
       tags:
       - User
-  /api/user/{id}/ban:
+  /api-users/users/{id}/ban:
     post:
       description: BanUser
       operationId: BanUser
@@ -119,7 +139,7 @@ paths:
       summary: BanUser
       tags:
       - Admin
-  /api/user/change-password:
+  /api-users/users/change-password:
     put:
       description: Change Password
       operationId: ChangePassword
@@ -142,26 +162,6 @@ paths:
       security:
       - BearerAuth: []
       summary: Change Password
-      tags:
-      - User
-  /api/users:
-    get:
-      description: GetAllUsers
-      operationId: GetAllUsers
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-        "400":
-          description: Bad Request
-        "401":
-          description: Unauthorized
-        "500":
-          description: Internal Server Error
-      security:
-      - BearerAuth: []
-      summary: GetAllUsers
       tags:
       - User
   /auth/login:

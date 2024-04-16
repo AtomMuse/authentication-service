@@ -90,12 +90,12 @@ func main() {
 		authRoutes.POST("/login", authHandler.Login)
 		authRoutes.POST("/register", authHandler.Register)
 	}
-	apiRoutes := router.Group("/api")
+	apiRoutes := router.Group("/api-users")
 	{
-		apiRoutes.PUT("/user/:id", authMiddleware("exhibitor"), userHandler.UpdateUserByID)
-		apiRoutes.PUT("/user/change-password", authMiddleware("exhibitor"), userHandler.ChangePassword)
+		apiRoutes.PUT("/users/:id", authMiddleware("exhibitor"), userHandler.UpdateUserByID)
+		apiRoutes.PUT("/users/change-password", authMiddleware("exhibitor"), userHandler.ChangePassword)
 		apiRoutes.GET("/users", authMiddleware("admin"), userHandler.GetAllUsers)
-		apiRoutes.POST("/user/:id/ban", authMiddleware("admin"), userHandler.BanUser)
+		apiRoutes.POST("/users/:id/ban", authMiddleware("admin"), userHandler.BanUser)
 	}
 
 	// Run the server

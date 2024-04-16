@@ -34,7 +34,7 @@ func NewUserHandler(userService services.UserService) *UserHandler {
 //	@Failure		400
 //	@Failure		401
 //	@Failure		500
-//	@Router			/api/user/{id} [put]
+//	@Router			/api-users/users/{id} [put]
 func (h *UserHandler) UpdateUserByID(c *gin.Context) {
 	// Get user ID from URL path
 	userID := c.Param("id")
@@ -66,7 +66,7 @@ func (h *UserHandler) UpdateUserByID(c *gin.Context) {
 //	@Success		200
 //	@Failure		401
 //	@Failure		500
-//	@Router			/api/user/change-password [put]
+//	@Router			/api-users/users/change-password [put]
 func (h *UserHandler) ChangePassword(c *gin.Context) {
 	var changePasswordRequest model.RequestUpdateUserPassword
 	if err := c.ShouldBindJSON(&changePasswordRequest); err != nil {
@@ -106,7 +106,7 @@ func (h *UserHandler) ChangePassword(c *gin.Context) {
 //	@Failure		400
 //	@Failure		401
 //	@Failure		500
-//	@Router			/api/user/{id}/ban [post]
+//	@Router			/api-users/users/{id}/ban [post]
 func (h *UserHandler) BanUser(c *gin.Context) {
 	userID := c.Param("id")
 	if err := h.userService.BanUser(c.Request.Context(), userID); err != nil {
@@ -127,7 +127,7 @@ func (h *UserHandler) BanUser(c *gin.Context) {
 //	@Failure		400
 //	@Failure		401
 //	@Failure		500
-//	@Router			/api/users [get]
+//	@Router			/api-users/users [get]
 func (h *UserHandler) GetAllUsers(c *gin.Context) {
 	users, err := h.userService.GetAllUsers(c.Request.Context())
 	if err != nil {
